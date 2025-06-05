@@ -478,6 +478,7 @@ tesla.brake();
   // 2) Priavte fields
   // 3) Public methods
   // 4) Private methods 
+  // (There is also Static version  )
 
 class Account {
   // 1) Public fields(instances)
@@ -514,14 +515,24 @@ class Account {
     this.deposit(-val);
     console.log(`Withdrawn ${val}`);
   }
-  _approveLoan(val) {
-    return true;
-  }
+  // _approveLoan(val) {
+  //   return true;
+  // }
   requestLoan(val) {
-    if (this.approveLoan(val)) {
+    if (this._approveLoan(val)) {
       this.deposit(val);
       console.log(`Loan approved`);
     }
+  }
+
+  static helper(){
+    console.log('Helper finction');
+  }
+
+  // 4) Private methods 
+  // #approveLoan(val){
+  _approveLoan(val){
+    return true;
   }
 }
 
@@ -534,5 +545,4 @@ console.log(acc1);
 console.log(acc1.getMovement());
 // console.log(acc1.#movements()); // cant acces
 // console.log(acc1.#pin()); // cant acces
-
 
