@@ -474,11 +474,11 @@ tesla.brake();
 ////////////////////////////////////////////////
 // Another Class Example
 
-  // 1) Public fields
-  // 2) Priavte fields
-  // 3) Public methods
-  // 4) Private methods 
-  // (There is also Static version  )
+// 1) Public fields
+// 2) Priavte fields
+// 3) Public methods
+// 4) Private methods
+// (There is also Static version  )
 
 class Account {
   // 1) Public fields(instances)
@@ -502,18 +502,21 @@ class Account {
   // 3) Public methods
   // Public Interface
 
-  getMovement(){
+  getMovement() {
     return this.#movements;
   }
 
   deposit(val) {
     this.#movements.push(val);
     console.log(`Deposited ${val}`);
+
+    return this;
   }
 
   withdraw(val) {
     this.deposit(-val);
     console.log(`Withdrawn ${val}`);
+    return this;
   }
   // _approveLoan(val) {
   //   return true;
@@ -523,15 +526,16 @@ class Account {
       this.deposit(val);
       console.log(`Loan approved`);
     }
+    return this;
   }
 
-  static helper(){
+  static helper() {
     console.log('Helper finction');
   }
 
-  // 4) Private methods 
+  // 4) Private methods
   // #approveLoan(val){
-  _approveLoan(val){
+  _approveLoan(val) {
     return true;
   }
 }
@@ -546,3 +550,89 @@ console.log(acc1.getMovement());
 // console.log(acc1.#movements()); // cant acces
 // console.log(acc1.#pin()); // cant acces
 
+////////////////////////////////////////////////
+// Chaining
+// for that we add (return this) in fuction
+
+// acc1.deposit(5000).deposit(20152).withdraw(50123).requestLoan(21023);
+// console.log(acc1.getMovement());
+
+////////////////////////////////////////////////
+// Challange 4
+
+class car {
+  constructor(make, speed) {
+    this.make = make;
+    this.speed = speed;
+  }
+
+  accelerate() {
+    this.speed += 10;
+    console.log(`${this.make} is going at ${this.speed} km/h`);
+  }
+
+  brake() {
+    this.speed -= 5;
+    console.log(`${this.make} is going at ${this.speed} km/h`);
+    return this;
+  }
+
+  get speedUs() {
+    return this.speed / 1.6;
+  }
+
+  set speedUs(s) {
+    this.speed = s * 1.6;
+  }
+}
+
+class Ev extends car {
+  #charge;
+  constructor(make, speed, charge) {
+    super(make, speed);
+    // car.call(this, make, speed);
+    this.#charge = charge;
+  }
+
+  chargeBattery(chargeTo) {
+    this.#charge = chargeTo;
+    console.log(`Charge of ${this.make} is ${this.#charge}`);
+    return this;
+  }
+
+  accelerate() {
+    this.speed += 20;
+    this.#charge -= 1;
+    console.log(
+      `${this.make} is going at ${this.speed} km/h, with Charge of ${
+        this.#charge
+      }%`
+    );
+    return this;
+  }
+}
+
+const bmw = new car('BMW', 150);
+console.log(bmw);
+bmw.accelerate();
+bmw.accelerate();
+bmw.accelerate();
+bmw.brake();
+bmw.brake();
+bmw.brake();
+bmw.brake();
+
+const bmw1 = new Ev('BMW', 150, 75);
+console.log(bmw1);
+bmw1.accelerate();
+bmw1.accelerate();
+bmw1.accelerate();
+bmw1.accelerate();
+bmw1.brake();
+bmw1.brake();
+bmw1.brake();
+bmw1.brake();
+bmw1.chargeBattery(80);
+// console.log(bmw1);
+
+bmw1.accelerate().chargeBattery(85);
